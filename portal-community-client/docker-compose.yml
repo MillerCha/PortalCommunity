@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # מפה את פורט 3000 בקונטיינר למחשב המקומי
+      - 9229:9229 # docker debugger port
+    volumes:
+      - .:/app      # סנכרון קבצים בזמן אמת
+      - /app/node_modules # מניעת שינויים ב-node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev

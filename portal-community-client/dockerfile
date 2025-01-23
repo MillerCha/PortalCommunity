@@ -1,0 +1,20 @@
+# שימוש בתמונה בסיסית
+FROM node:18-alpine
+
+# הגדרת תיקיית העבודה
+WORKDIR /app
+
+# העתקת קובצי התצורה
+COPY package.json package-lock.json ./
+
+# התקנת תלויות
+RUN npm install
+
+# העתקת שאר הקבצים לפרויקט
+COPY . .
+
+# חשיפת פורטים
+EXPOSE 3000
+
+# הפקודה להפעלת סביבת הפיתוח
+CMD ["npm", "run", "dev"]
