@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 using Microsoft.Extensions.Options;
+using AuthService.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ builder.Services.AddLogging(logging =>
     logging.AddConsole();
     logging.AddDebug();
 });
+
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 // Configure JWT authentication
 
