@@ -20,18 +20,6 @@ namespace AuthService.Controllers
         public AuthenticationController(IConfiguration configuration)
         {
             _configuration = configuration;
-            //var rsa = RSA.Create();
-            ////var privateKey = Convert.FromBase64String(configuration["JwtSettings:PrivateKey"]);
-            //var privateKeyBase64 = _configuration["JwtSettings:PrivateKey"];
-            //var publicKeyBase64 = _configuration["JwtSettings:PublicKey"];
-            //rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKeyBase64), out _);
-            //rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKeyBase64), out _);
-
-            ////rsa.ImportRSAPrivateKey(privateKey, out _);
-            //_signingKey = new RsaSecurityKey(rsa)
-            //{
-            //    KeyId = Guid.NewGuid().ToString()
-            //};
         }
 
         [HttpGet]
@@ -40,9 +28,17 @@ namespace AuthService.Controllers
 
 
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+            var privateKeyString = jwtSettings["PrivateKey"].ToString();
+            byte[] privateKeyBytes = Convert.FromBase64String(privateKeyString);
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var rsa = RSA.Create();
+            rsa.ImportRSAPrivateKey(privateKeyBytes, out _);
+
+            var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
+
+            // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+
+            //var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 
             if (string.IsNullOrEmpty(username))
@@ -61,7 +57,7 @@ namespace AuthService.Controllers
                 audience: jwtSettings["Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(300),
-                signingCredentials: creds);
+                signingCredentials: signingCredentials);
 
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
 

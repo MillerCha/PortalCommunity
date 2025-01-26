@@ -21,7 +21,14 @@ builder.Services.AddLogging(logging =>
 // Configure JWT authentication
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+
+var publicKeyString = jwtSettings["PublicKey"].ToString();
+byte[] publicKeyBytes = Convert.FromBase64String(publicKeyString);
+
+var rsa = RSA.Create();
+rsa.ImportRSAPublicKey(publicKeyBytes, out _);
+
+//var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 
 
 //הגדרת שירותי Authentication ו-JWT Bearer
@@ -40,7 +47,7 @@ builder.Services.AddAuthentication(options =>
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtSettings["Issuer"],
                     ValidAudience = jwtSettings["Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new RsaSecurityKey(rsa),
                     ClockSkew = TimeSpan.Zero
 
                 };
