@@ -4,13 +4,24 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Cryptography;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Configuration;
-using System.Text;
-using Microsoft.Extensions.Options;
+using AuthService.Interfaces;
 using AuthService.Services;
 
 
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+                      {
+                          policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                      });
+});
 
 builder.Services.AddLogging(logging =>
 {
@@ -95,6 +106,8 @@ builder.Services.AddSwaggerGen(option =>
 
 var app = builder.Build();
 
+app.UseCors();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -102,11 +115,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.UseHttpsRedirection();
 
 
-app.UseAuthentication(); // Middleware לבדיקת הטוקן
-app.UseAuthorization();  // Middleware לבדיקת הרשאות
+app.UseAuthentication(); // Middleware check token
+app.UseAuthorization();  // Middleware check role
 
 app.MapControllers();
 

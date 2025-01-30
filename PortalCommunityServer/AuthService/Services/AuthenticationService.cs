@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AuthService.Interfaces;
+using AuthService.Model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,10 +17,10 @@ namespace AuthService.Services
             _configuration = configuration;
         }
 
-        public string Auth(string username)
+        public string Auth(Credential credential)
         {
 
-            if (string.IsNullOrEmpty(username))
+            if (credential.UserName != "משה" || credential.Password !="123")
                 return null; 
 
             var jwtSettings = _configuration.GetSection("JwtSettings");
@@ -33,9 +35,9 @@ namespace AuthService.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(JwtRegisteredClaimNames.Sub, credential.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, username)
+                new Claim("name", credential.UserName)
             };
 
             var token = new JwtSecurityToken(

@@ -4,6 +4,10 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthService", "AuthService\AuthService.csproj", "{39E97D10-945E-4428-944E-425B24FEF893}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoursesService", "CoursesService\CoursesService.csproj", "{A8E33C94-4543-4B04-84C9-66C6C9AA94FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryService", "LibraryService\LibraryService.csproj", "{C608FBC0-E21A-4CB6-B7ED-E79616740BB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +18,14 @@ Global
 		{39E97D10-945E-4428-944E-425B24FEF893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39E97D10-945E-4428-944E-425B24FEF893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39E97D10-945E-4428-944E-425B24FEF893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E33C94-4543-4B04-84C9-66C6C9AA94FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E33C94-4543-4B04-84C9-66C6C9AA94FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E33C94-4543-4B04-84C9-66C6C9AA94FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E33C94-4543-4B04-84C9-66C6C9AA94FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C608FBC0-E21A-4CB6-B7ED-E79616740BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C608FBC0-E21A-4CB6-B7ED-E79616740BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C608FBC0-E21A-4CB6-B7ED-E79616740BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C608FBC0-E21A-4CB6-B7ED-E79616740BB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,9 @@
-﻿namespace AuthService.Services
+﻿using AuthService.Model;
+
+namespace AuthService.Interfaces
 {
     public interface IAuthenticationService
     {
-        string Auth(string username);
+        string Auth(Credential credential);
     }
 }

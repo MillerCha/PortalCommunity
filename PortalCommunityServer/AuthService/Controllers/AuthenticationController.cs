@@ -1,3 +1,5 @@
+using AuthService.Interfaces;
+using AuthService.Model;
 using AuthService.Services;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +25,11 @@ namespace AuthService.Controllers
             _authenticationService = AuthenticationService;
         }
 
-        [HttpGet]
-        public IActionResult Get(string username)
+        [HttpPost]
+        public IActionResult Login(Credential credential)
         {
 
-            string tokenString = _authenticationService.Auth(username);
+            string tokenString = _authenticationService.Auth(credential);
             
             if (tokenString == null)
             {
