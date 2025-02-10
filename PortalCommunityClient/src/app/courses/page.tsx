@@ -1,62 +1,50 @@
-'use client'
-import Image from "next/image";
-import BoyBooks from '../images/BoyBooks.jpg'
-import { get } from "../../services/requestService";
-import axios, { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import axios from "axios";
+
+// In development mode, this disables SSL certificate validation to allow 
+// requests to self-signed HTTPS servers (e.g., localhost with HTTPS).
+// ⚠ For production, it's recommended to install a valid SSL certificate instead 
+//   of disabling validation.
+// Alternative: You can generate and trust a local certificate using `mkcert` or 
+//   `dotnet dev-certs https --trust`.
+
+if (process.env.NODE_ENV === 'development') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
+
+import { Suspense } from "react";
 
 interface Course {
-  id: number,
-  name: string
+  id: number;
+  name: string;
 }
-export default function Courses() {
-const [coursesList, setCoursesList] = useState([{id:1,name:"123"}]);
-  const COURSES_URL = process.env.NEXT_PUBLIC_COURSES_SERVICE_URL;
 
-  const coursesListUrl = `${COURSES_URL}/Courses`;
-  console.log(coursesListUrl);
+async function fetchCourses(): Promise<Course[]> {
+  const COURSES_URL = process.env.NEXT_PUBLIC_COURSES_SERVICE_URL; 
+  const coursesListUrl = `https://localhost:44379/api/Courses`;
 
-  //var coursesList: course[] = [{id:1,name:"123"}];// = response.data;
-  
-  const fetchCourses = async () => {
-    try {
-      const response: AxiosResponse<Course[]> = await axios.get<Course[]>(coursesListUrl);
-      setCoursesList(response.data);
-    } catch (error) {
-      console.error("Failed to fetch courses:", error);
-    }
-  };
+  try {
+    const response =await axios.get(coursesListUrl);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    return []; 
+  }
+}
 
-  useEffect(() =>{
-    fetchCourses();
-  },[]);
-  // 
-  //  try {
-  //   const response: AxiosResponse<course[]> = await get<course[]>(coursesListurl);
-  //   coursesList = response.data;
-  // } catch (error) {
-  //   console.error("Failed to fetch courses:", error);
-  //   return <div>Error loading courses</div>;
-  // }
- 
+export default async function Courses() {
+  const coursesList = await fetchCourses();
 
   return (
-    coursesList.map(i => {
-       return (<div key= {i.id}>{i.id}
-          <div className="w-full">{i.name}</div>
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
-            <p className="text-gray-700 text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Courses</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {coursesList.map((course) => (
+          <div key={course.id} className="p-4 border rounded shadow">
+            <h2 className="text-xl font-semibold">{course.name}</h2>
+            <p className="text-gray-600">Course ID: {course.id}</p>
           </div>
-          <div className="px-6 pt-4 pb-2">
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-          </div>
-        </div>)
-    })
-    
+        ))}
+      </div>
+    </div>
   );
 }

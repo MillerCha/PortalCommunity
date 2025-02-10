@@ -1,4 +1,4 @@
-using CoursesService.Model;
+using Models;
 
 namespace CoursesService.Interfaces
 {

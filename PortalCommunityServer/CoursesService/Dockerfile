@@ -23,3 +23,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CoursesService.dll"]
+RUN apt update && apt install -y libkrb5-3

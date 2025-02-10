@@ -1,7 +1,18 @@
 using CoursesService.Interfaces;
 using CoursesService.Services;
+using Microsoft.EntityFrameworkCore;
+using Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+//connection string 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// DI-DbContext 
+builder.Services.AddDbContext<CoursesContext>(options =>
+    options.UseSqlServer(connectionString));
+
 
 builder.Services.AddCors(options =>
 {
