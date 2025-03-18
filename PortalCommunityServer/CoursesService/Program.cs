@@ -1,3 +1,4 @@
+using CoursesService.BL;
 using CoursesService.Interfaces;
 using CoursesService.Services;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ builder.Services.AddCors(options =>
 );
 // Add services to the container.
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<StudentCourseService, StudentCourseService>();
 
 
 builder.Services.AddControllers();

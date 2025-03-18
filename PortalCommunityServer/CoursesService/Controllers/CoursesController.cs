@@ -69,7 +69,8 @@ namespace CoursesService.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            //_context.Entry(course).State = EntityState.Modified;
+            _context.Entry(course).Property(c=>c.Description).IsModified=true;
 
             try
             {

@@ -12,37 +12,35 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 import { Suspense } from "react";
+import CourseItem from "./components/courseItem";
 
-interface Course {
-  id: number;
-  name: string;
-}
+
 
 async function fetchCourses(): Promise<Course[]> {
-  const COURSES_URL = process.env.NEXT_PUBLIC_COURSES_SERVICE_URL; 
+  const COURSES_URL = process.env.NEXT_PUBLIC_COURSES_SERVICE_URL;
   const coursesListUrl = `https://localhost:44379/api/Courses`;
 
   try {
-    const response =await axios.get(coursesListUrl);
+    const response = await axios.get(coursesListUrl);
     return response.data;
   } catch (error) {
     console.error("Error fetching courses:", error);
-    return []; 
+    return [];
   }
 }
+
 
 export default async function Courses() {
   const coursesList = await fetchCourses();
 
   return (
     <div>
+      {JSON.stringify(coursesList)}
       <h1 className="text-2xl font-bold mb-4">Courses</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {coursesList.map((course) => (
-          <div key={course.id} className="p-4 border rounded shadow">
-            <h2 className="text-xl font-semibold">{course.name}</h2>
-            <p className="text-gray-600">Course ID: {course.id}</p>
-          </div>
+          <CourseItem key={course.courseId} course={course} />
+          
         ))}
       </div>
     </div>
